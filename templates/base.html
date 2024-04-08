@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='image-1.png') }}">
+    <!-- Content Mgmt. System -->
+    <title>{% block title %}{% endblock %}</title>       
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  </head>
+  <body>
+
+    <!-- Nav bar with store name, address & a dropdown menu -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid" style="font-family:Algerian;">
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item dropdown">
+                <!-- Dropdown menu contains Home which leads to option selected as per flag value  -->
+                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Menu</a>
+                <ul class="dropdown-menu">
+                  <!-- If flag value is True, link leads to admin pages-->
+                  {% if flag %}
+                  <li><a class="dropdown-item" href="/admin_category_cms">Categories</a></li>
+                  <li><a class="dropdown-item" href="/admin_product_cms">Product</a></li>
+                  <!-- If flag value is False, link leads to user page-->
+                  {% else %}
+                  <li><a class="dropdown-item" href="/category">Categories</a></li>
+                  <li><a class="dropdown-item" href="/order">Previous Orders</a></li>
+                  {% endif %}
+                </ul>
+              </li>
+            </ul>
+            {% if flag==False %}
+            <a href='/cart' type="button" style="float:right;" class="btn btn-dark mx-2 my-2">&nbsp;&nbsp;Go to Cart&nbsp;&nbsp;</a>
+            {% endif %}
+            <!--  -->
+            {% if flag %}
+            <form class="d-flex" role="search" action="/admin_search" method="GET">
+              <input class="form-control me-2" type="text" name="query" placeholder="Enter for search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit" hidden>Search</button>
+            </form>
+            {% else %}
+            <form class="d-flex" role="search" action="/search" method="GET">
+              <input class="form-control me-2" type="text" name="query" placeholder="Enter for search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit" hidden>Search</button>
+            </form>
+            {% endif %}
+
+            <!-- Logout form which acts to "admin_logout" or "user_logout" route & uses POST method -->
+            <!-- After hit to Logout button, it logouts admin by removing admin_id from session  -->
+            {% if flag %}
+            <form class="d-flex mx-2" role="search" action="/admin_logout" method="POST">
+              <button class="btn btn-outline-success" type="submit">Logout</button>
+            </form>
+            {% else %}
+            <form class="d-flex mx-2" role="search" action="/logout" method="POST">
+              <button class="btn btn-outline-success" type="submit">Logout</button>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+      </nav>
+
+      {% block main %}
+        
+      {%  endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  </body>
+</html>
