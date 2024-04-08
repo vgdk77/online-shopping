@@ -1,98 +1,48 @@
 {% extends "base.html" %}
-{% block title %}HOME{% endblock %}
-  {% block main %}
-
-      <div style="font-family:Bradley Hand ITC;">
-          <center>
-          <div class="p-3 "  style="font-family:Times New Roman;">
-            <h1 style=" color: black; font-size: 3rem;" scrollamount="20" > Online Grocery Shop</h1>
-          </div>
-          </center>
-      </div>
-      <div class="container">
-        <center><h3 style = 'font-weight: 400;'>RECENTLY ADDED</h3></center>
-      <div class="row row-cols-1 row-cols-md-4 g-4 my-2 mx-2">
-        {%for i in recent_products %}
-        <form action="/add_to_cart_to_home/{{i[0]}}", method="POST">
-            <div class="col" id="mv">
-            <div class="card" id="recent{{i[0]}}">
-                <a href='/product/{{i[0]}}'><img src="{{i[9]}}" height="225px" class="card-img-top" alt="{{i[1]}}"></a>
-                <div class="card-body">
-                <!-- <p class="card-title">id: {{i.id}}</p> -->
-                <p class="card-title" style="float:right;"><b>₹{{i[8]}}</b>/{{i[6]}}</p>
-                <p class="card-title"><b>{{i[1]}}</b></p>
-                <!-- <p class="card-title">category: {{i.category}}</p> -->
-                <p class="card-title" style="float:right;">{{i[2]}}</p>
-                <div class="col-md-3 col-lg-3 col-xl-2">
-                    <button class="btn btn-link px-2"
-                      onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                      <i class="fas fa-minus"></i>
-                    </button>
-          
-                    <input id="form1" min="0" name="quantity" value="1" type="number"
-                      class="form-control form-control-sm" />
-          
-                    <button class="btn btn-link px-2"
-                      onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                      <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-                <!-- <p class="card-title">mfg_date: {{i.mfg_date}}</p> -->
-                <input type="text" value="recent{{i[0]}}", name="htmlid" hidden />
-                <p class="card-title" style="float:left;">exp_date: {{i[5]}}</p>
-                <!-- <p class="card-title">unit: {{i.unit}}</p> -->
-                <!-- <p class="card-title">qty: {{i.qty}}</p> -->
-                <button type="submit" style="float:right;" class="btn btn-dark">Add to cart</button>
-                </div>
-            </div>
-            </div>
-        </form>
+{% block title %}ORDER DETAILS{% endblock %}
+{% block main %}
+<!-- Render flashed messages -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+        {% for message in messages %}
+            <center><b style="font-size: 40px">{{ message }}</b></center>
         {% endfor %}
+{% endif %}
+{% endwith %}
+    <div class="container my-4">
+        <div class="p-2" style="font-family: Times New Roman;">
+            <h1 ><center>ORDER DETAILS #{{ order_id }}</center></h1>
+        </div>
+        <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Brand</th>
+                            <th scope="col">Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in product_list %}
+                        <tr>
+                            <td>{{ item[0] }}</td>
+                            <td>{{ item[1] }}</td>
+                            <td>{{ item[2] }}</td>
+                            <td>{{ item[3] }}</td>
+                            <td><img src="{{ item[4] }}" height="100px"></td>
+                            <td>{{ item[5] }}</td>
+                            <td>{{ item[6] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+        </div>
+        <div class="text-center">
+            <h4>Total: ₹{{ total_price }}</h4>
+        </div>
     </div>
-    </div>
-    <div class="container">
-      {% for category in dict_of_all_category_products %}
-        <center><h3>{{ category }}</h3></center>
-        <div class="row row-cols-1 row-cols-md-4 g-4 my-2 mx-2">
-          {% for i in dict_of_all_category_products[category] %}
-          <form action="/add_to_cart_to_home/{{i[0]}}", method="POST">
-              <div class="col" id="mv">
-              <div class="card" id="{{ category }}{{i[0]}}">
-                  <a href='/product/{{i[0]}}'><img src="{{i[9]}}" height="225px" class="card-img-top" alt="{{i[1]}}"></a>
-                  <div class="card-body">
-                  <!-- <p class="card-title">id: {{i.id}}</p> -->
-                  <p class="card-title" style="float:right;"><b>₹{{i[8]}}</b>/{{i[6]}}</p>
-                  <p class="card-title"><b>{{i[1]}}</b></p>
-                  <!-- <p class="card-title">category: {{i.category}}</p> -->
-                  <p class="card-title" style="float:right;">{{i[2]}}</p>
-                  <div class="col-md-3 col-lg-3 col-xl-2">
-                      <button class="btn btn-link px-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                        <i class="fas fa-minus"></i>
-                      </button>
-            
-                      <input id="form1" min="0" name="quantity" value="1" type="number"
-                        class="form-control form-control-sm" />
-            
-                      <button class="btn btn-link px-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                        <i class="fas fa-plus"></i>
-                      </button>
-                  </div>
-                  <!-- <p class="card-title">mfg_date: {{i.mfg_date}}</p> -->
-                  <input type="text" value="{{ category }}{{ i[0] }}" name="htmlid" hidden />
-                  <p class="card-title" style="float:left;">exp_date: {{i[5]}}</p>
-                  <!-- <p class="card-title">unit: {{i.unit}}</p> -->
-                  <!-- <p class="card-title">qty: {{i.qty}}</p> -->
-                  <button type="submit" style="float:right;" class="btn btn-dark">Add to cart</button>
-                  </div>
-              </div>
-              </div>
-          </form>
-          {% endfor %}
-      </div>
-      {% endfor %}
-    </div>
-  {% endblock %}
-    
-  
+{% endblock %}
