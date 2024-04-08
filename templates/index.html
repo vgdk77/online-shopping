@@ -3,15 +3,14 @@
   {% block main %}
 
       <div style="font-family:Bradley Hand ITC;">
-          <center><h1><b>WELCOME TO...</b></h1>
-          <div class="p-3 "  style="font-family:Algerian; background-color:#ecd1d1">
-            <h1 style=" color: black;" scrollamount="20" > Online shopping </h1>
+          <center>
+          <div class="p-3 "  style="font-family:Times New Roman;">
+            <h1 style=" color: black; font-size: 3rem;" scrollamount="20" > Online Grocery Shop</h1>
           </div>
-            <p><h3>Find Everything you need, at a one place !!</h3></p>
           </center>
       </div>
       <div class="container">
-        <center><h3><u>Recently Added</u></h3></center>
+        <center><h3 style = 'font-weight: 400;'>RECENTLY ADDED</h3></center>
       <div class="row row-cols-1 row-cols-md-4 g-4 my-2 mx-2">
         {%for i in recent_products %}
         <form action="/add_to_cart_to_home/{{i[0]}}", method="POST">
